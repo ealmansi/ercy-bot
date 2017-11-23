@@ -10,6 +10,7 @@ const SlackPublisher = require('./src/SlackPublisher');
 async function main() {
   try {
     logger.info(`Launching ${config.get('appName')}.`);
+    await DatabaseFactory.setup(config.util.getEnv('NODE_ENV'));
     const db = await DatabaseFactory.createClient();
     const contractListener = buildContractListener(db);
     const slackPublisher = buildSlackPublisher(db);

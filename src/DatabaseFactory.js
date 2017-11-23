@@ -1,4 +1,6 @@
+const logger = require('./logger');
 const Promise = require('bluebird');
+const RedisServer = require('redis-server');
 const redis = Promise.promisifyAll(require('redis'));
 
 class DatabaseClient {
@@ -22,6 +24,22 @@ class DatabaseClient {
 };
 
 class DatabaseFactory {
+
+  static setup(env) {
+    if (env === 'development') {
+      logger.info('Starting Redis development server.');
+      return new Promise((resolve, reject) => {
+        const server = new RedisServer();
+        server.open((err) => {
+          if (err !== null) {
+            reject(err);
+          }
+          resolve();
+        });
+      });
+    }
+    return Promise.resolve();
+  }
 
   static createClient() {
     return new Promise((resolve, reject) => {
