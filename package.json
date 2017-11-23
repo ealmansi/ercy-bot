@@ -23,5 +23,9 @@
   },
   "devDependencies": {
     "redis-server": "^1.1.0"
+  },
+  "engines": {
+    "node": "8.9.1",
+    "npm": "5.5.1"
   }
 }
