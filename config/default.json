@@ -1,0 +1,8 @@
+{
+  "appName": "dizzy-chipmunk",
+  "logger": {
+    "level": "debug",
+    "console": true,
+    "file": "dizzy-chipmunk.log"
+  }
+}
