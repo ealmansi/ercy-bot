@@ -9,6 +9,4 @@ Development
   - BOT_ID: user id for the bot user.
   - CHANNEL_ID: channel id for the channel where the bot will publish all tranfer events.
 
-2. Run app in development mode:
-
-`$ npm run dev`
+2. Run app in development mode: `$ npm run dev`
