@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_ENV=development node index.js",
+    "start": "HOSTNAME=$NETWORK NODE_ENV=production node index.js",
+    "dev": "HOSTNAME=$NETWORK NODE_ENV=development bash scripts/dev.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +14,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "config": "^1.28.1",
+    "left-pad": "^1.2.0",
     "moment": "^2.19.2",
     "promise-retry": "^1.1.1",
     "redis": "^2.8.0",
@@ -22,6 +23,10 @@
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
     "redis-server": "^1.1.0"
   },
   "engines": {

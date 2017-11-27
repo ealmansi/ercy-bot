@@ -1,0 +1,38 @@
+
+const CONTRACTS = [
+  {
+    name: "Qtum",
+    symbol: "QTUM",
+    address: "0x9a642d6b3368ddc662CA244bAdf32cDA716005BC"
+  },
+  {
+    name: "EOS",
+    symbol: "EOS",
+    address: "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0"
+  },
+  {
+    name: "OmiseGo",
+    symbol: "OMG",
+    address: "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07"
+  },
+  {
+    name: "Maker",
+    symbol: "MKR",
+    address: "0xc66ea802717bfb9833400264dd12c2bceaa34a6d"
+  },
+  {
+    name: "Augur",
+    symbol: "REP",
+    address: "0xe94327d07fc17907b4db788e5adf2ed424addff6"
+  },
+  {
+    name: "Golem",
+    symbol: "GNT",
+    address: "0xa74476443119A942dE498590Fe1f2454d7D4aC0d"
+  },
+  {
+    name: "Digix Global",
+    symbol: "DGD",
+    address: "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a"
+  }
+]
