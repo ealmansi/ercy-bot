@@ -1,6 +1,6 @@
 # Dizzy Chipmunk
 
-[![Build Status](https://travis-ci.org/ealmansi/dizzy-chipmunk.svg?branch=master)](https://travis-ci.com/ealmansi/dizzy-chipmunk)
+[![Build Status](https://travis-ci.org/ealmansi/dizzy-chipmunk.svg?branch=master)](https://travis-ci.org/ealmansi/dizzy-chipmunk)
 
 ## Development
 
@@ -19,6 +19,6 @@ Run app in production mode: `$ npm start`
 
 Run app in production mode for Ropsten network: `$ NETWORK=ropsten npm start`
 
-# Test
+## Test
 
 Run tests: `$ npm test`

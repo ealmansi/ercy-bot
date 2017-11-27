@@ -54,17 +54,17 @@ describe('BlockchainListener', () => {
   });
 
   describe('#getPendingBlockNumber()', () => {
-    // No previously saved pending block. No confirmed blocks available
+    // No previously saved pending block. No confirmed blocks available.
     const PENDING_BLOCK_NUMBER_0 = null;
     const BLOCK_NUMBER_0 = 5;
     const EXPECTED_PENDING_BLOCK_NUMBER_0 = null;
 
-    // No previously saved pending block. Confirmed block available
+    // No previously saved pending block. Confirmed block available.
     const PENDING_BLOCK_NUMBER_1 = null;
     const BLOCK_NUMBER_1 = 20;
     const EXPECTED_PENDING_BLOCK_NUMBER_1 = 9;
 
-    // Previously saved pending block without enough confirmations
+    // Previously saved pending block without enough confirmations.
     const PENDING_BLOCK_NUMBER_2 = 20;
     const BLOCK_NUMBER_2 = 25;
     const EXPECTED_PENDING_BLOCK_NUMBER_2 = null;
