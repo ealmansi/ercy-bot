@@ -1,2 +1,5 @@
 # Compiled artifacts
 build/
+
+# Local config.
+config.js
