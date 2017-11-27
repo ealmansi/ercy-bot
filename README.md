@@ -19,6 +19,6 @@ Run app in production mode: `$ npm start`
 
 Run app in production mode for Ropsten network: `$ NETWORK=ropsten npm start`
 
-# Test
+## Test
 
 Run tests: `$ npm test`
