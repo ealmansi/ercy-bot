@@ -6,7 +6,7 @@
   "scripts": {
     "start": "HOSTNAME=$NETWORK NODE_ENV=production node index.js",
     "dev": "HOSTNAME=$NETWORK NODE_ENV=development bash scripts/dev.sh",
-    "test": "mocha --timeout $MOCHA_TESTS_TIMEOUT"
+    "test": "mocha --timeout 10000"
   },
   "keywords": [],
   "author": "Emilio Almansi",
