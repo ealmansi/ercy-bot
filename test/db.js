@@ -1,6 +1,7 @@
 /* global describe it before after */
 /* eslint no-unused-vars: 0 */
 const chai = require('chai');
+const logger = require('../src/logger');
 const DatabaseFactory = require('../src/db/DatabaseFactory');
 const DatabaseUtil = require('../src/db/DatabaseUtil');
 const RedisServer = require('redis-server');
@@ -106,6 +107,7 @@ describe('DatabaseClient', () => {
     server = new RedisServer();
     server.open((error) => {
       if (error) {
+        logger.error(error);
         done(error);
         return;
       }
@@ -113,6 +115,10 @@ describe('DatabaseClient', () => {
         .then((databaseClient) => {
           db = databaseClient;
           done();
+        })
+        .catch((err) => {
+          logger.error(err);
+          done(err);
         });
     });
   });
