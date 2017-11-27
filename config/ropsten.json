@@ -7,6 +7,11 @@
         "address": "0x1f8e532680b31da2a2d51196548fdc7ab48d8d9b"
       },
       {
+        "name": "Dizzy Token 2",
+        "symbol": "DZN2",
+        "address": "0x4f939ec8d8ee04d0bbddc9ff20ea66ca74607778"
+      },
+      {
         "name": "Bet",
         "symbol": "BET",
         "address": "0x95a48dca999c89e4e284930d9b9af973a7481287"

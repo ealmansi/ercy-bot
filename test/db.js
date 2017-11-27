@@ -119,6 +119,7 @@ describe('DatabaseClient', () => {
       server = await launchRedisServer();
     }
     db = await DatabaseFactory.createClient(TEST_NAMESPACE, TEST_TTL);
+    await db.redisClient.flushallAsync();
   });
 
   after((done) => {
