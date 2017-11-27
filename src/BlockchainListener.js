@@ -6,12 +6,15 @@ const MIN_CONFIRMATIONS = 12;
 
 class BlockchainListener {
   constructor(contracts, abi, web3, db) {
+    if (contracts.length === 0) {
+      throw new Error('Missing contracts to listen for.');
+    }
     this.contracts = contracts;
+    this.contractInstances = contracts.map(contract =>
+      web3.eth.contract(abi).at(contract.address));
     this.abi = abi;
     this.web3 = web3;
     this.db = db;
-    this.instances = contracts.map(contract =>
-      web3.eth.contract(abi).at(contract.address));
   }
 
   start() {
@@ -49,7 +52,7 @@ class BlockchainListener {
       async (result, contract, idx) =>
         result.concat(await this.getContractTransfers(
           contract,
-          this.instances[idx],
+          this.contractInstances[idx],
           { fromBlock: blockNumber, toBlock: blockNumber },
         )),
       [],
@@ -57,8 +60,8 @@ class BlockchainListener {
     return transfers.sort((t1, t2) => t1.logIndex - t2.logIndex);
   }
 
-  async getContractTransfers(contract, instance, filterOpts) {
-    const filter = instance.Transfer({}, filterOpts);
+  async getContractTransfers(contract, contractInstance, filterOpts) {
+    const filter = contractInstance.Transfer({}, filterOpts);
     const logs = await Promise.promisify(cb => filter.get(cb))();
     return logs.map((log) => {
       const { blockNumber, logIndex, transactionHash, args } = log;
