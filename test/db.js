@@ -103,24 +103,22 @@ describe('DatabaseClient', () => {
   let server;
   let db;
 
-  before((done) => {
-    server = new RedisServer();
-    server.open((error) => {
-      if (error) {
-        logger.error(error);
-        done(error);
-        return;
-      }
-      DatabaseFactory.createClient(TEST_NAMESPACE, TEST_TTL)
-        .then((databaseClient) => {
-          db = databaseClient;
-          done();
-        })
-        .catch((err) => {
-          logger.error(err);
-          done(err);
-        });
+  const launchRedisServer = async () =>
+    new Promise((resolve, reject) => {
+      const redisServer = new RedisServer();
+      redisServer.open((error) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(redisServer);
+      });
     });
+
+  before(async () => {
+    if (!process.env.TRAVIS) {
+      server = await launchRedisServer();
+    }
+    db = await DatabaseFactory.createClient(TEST_NAMESPACE, TEST_TTL);
   });
 
   after((done) => {
