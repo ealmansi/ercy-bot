@@ -1,79 +1,64 @@
 const logger = require('./logger');
 const moment = require('moment')
 const promiseRetry = require('promise-retry');
+const PollingWithRetry = require('./PollingWithRetry')
 
-const MAX_RETRIES = 5;
-const POLL_INTERVAL = moment.duration(500).asMilliseconds();
-const BACK_OFF_INTERVAL = moment.duration(10, 'minutes').asMilliseconds();
+const DISPLAY_PREFIX_LENGTH = 8;
 
 class SlackPublisher {
   
-  constructor(slack, botId, channelId, db) {
+  constructor(slack, channelId, explorerBaseUrls, db) {
     this.slack = slack;
-    this.botId = botId;
     this.channelId = channelId;
+    this.explorerBaseUrls = explorerBaseUrls;
     this.db = db;
   }
 
   start() {
     logger.info('Starting Slack publisher.');
-    this.schedulePublish(0);
+    new PollingWithRetry(this.handleTransfer.bind(this)).start();
   }
 
-  schedulePublish(timeout) {
-    setTimeout(() => {
-      try {
-        const opts = { minTimeout: 0, retries: MAX_RETRIES };
-        promiseRetry(this.publishOrRetry.bind(this), opts)
-        .then(this.onPromiseRetrySuccess.bind(this),
-              this.onPromiseRetryFailure.bind(this));
-      }
-      catch (error) {
-        logger.error(`Unexpected error during scheduling: ${JSON.stringify(error)}.`);
-        this.schedulePublish(BACK_OFF_INTERVAL);
-      }
-    }, timeout);
-  }
-
-  onPromiseRetrySuccess() {
-    this.schedulePublish(POLL_INTERVAL);
-  }
-
-  onPromiseRetryFailure(error) {
-    const message = [
-      'Failed to publish to Slack after multiple attempts.',
-      `Error: ${JSON.stringify(error)}. Trying again in 10 minutes.`
-    ].join(' ');
-    logger.error(message);
-    this.schedulePublish(BACK_OFF_INTERVAL);
-  }
-
-  async publishOrRetry(retry) {
-    try {
-      let eventId = await this.db.peekEvent();
-      while (eventId) {
-        const { ok, error } = await this.sendMessage(eventId);
-        if (!ok) {
-          logger.error(`Slack API Error: ${error}.`)
-          retry(error);
-        }
-        logger.info(`Sent message to Slack successfully: ${eventId}.`);
-        this.db.popEvent();
-        eventId = await this.db.peekEvent();
-      }
+  async handleTransfer() {
+    const transfer = await this.db.nextTransfer();
+    if (transfer === null) {
+      return;
     }
-    catch (error) {
-      logger.error(`Unexpected error during publishing: ${JSON.stringify(error)}.`);
-      retry(error);
-    }
+    const message = this.buildMessage(transfer);
+    await this.sendMessage(message);
+    await this.db.removeTransfer(transfer);
+  }
+
+  buildMessage(transfer) {
+    const { transactionHash, from, to, value, unit } = transfer;
+    const fromLink = this.makeAddressLink(from);
+    const toLink = this.makeAddressLink(to);
+    const transactionHashLink = this.makeTransactionHashLink(transactionHash);
+    return `${fromLink} sent ${value} ${unit} to ${toLink}! (tx: ${transactionHashLink}).`;
+  }
+
+  makeAddressLink(address) {
+    const link = `${this.explorerBaseUrls.address}/${address}`;
+    const text = `${address.substr(0, DISPLAY_PREFIX_LENGTH)}...`;
+    return `<${link}|${text}>`;
+  }
+
+  makeTransactionHashLink(hash) {
+    const link = `${this.explorerBaseUrls.transaction}/${hash}`;
+    const text = `${hash.substr(0, DISPLAY_PREFIX_LENGTH)}...`;
+    return `<${link}|${text}>`;
   }
 
   async sendMessage(message) {
-    return await this.slack.apiAsync('chat.postMessage', {
+    const { ok, error } = await this.slack.apiAsync('chat.postMessage', {
       as_user: true,
       text: message,
       channel: this.channelId
     });
+    if (!ok) {
+      throw new Error(`Slack API Error: ${error}.`);
+    }
+    logger.info(`Message sent to Slack successfully: \"${message}\".`);
   }
 };
 
