@@ -1,6 +1,6 @@
 # Dizzy Chipmunk
 
-[![Build Status](https://travis-ci.org/ealmansi/dizzy-chipmunk.svg?branch=master)](https://travis-ci.com/ealmansi/dizzy-chipmunk)
+[![Build Status](https://travis-ci.org/ealmansi/dizzy-chipmunk.svg?branch=master)](https://travis-ci.org/ealmansi/dizzy-chipmunk)
 
 ## Development
 
