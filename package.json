@@ -6,7 +6,7 @@
   "scripts": {
     "start": "HOSTNAME=$NETWORK NODE_ENV=production node index.js",
     "dev": "HOSTNAME=$NETWORK NODE_ENV=development bash scripts/dev.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "Emilio Almansi",
@@ -27,10 +27,15 @@
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "bignumber.js": "^4.1.0",
+    "chai": "^4.1.2",
     "concurrently": "^3.5.1",
     "eslint": "^4.12.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^4.0.1",
+    "mocha-eslint": "^4.1.0",
+    "sinon": "^4.1.2"
   },
   "engines": {
     "node": "8.9.1",
