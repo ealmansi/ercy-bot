@@ -2,15 +2,17 @@
 
 ## Development
 
-### Step 1
+Run app in development mode: `$ npm run dev`
 
-Copy file `config/development.json.sample` into `config/development.json` and introduce the following information:
+Run app in development mode for Ropsten network: `$ NETWORK=ropsten npm run dev`
 
-- TOKEN_ADDRESS: address where the target contract is hosted on the blockchain.
+## Production
+
+Copy file `config/local-production.json.sample` into `config/local-production.json` and introduce the following information:
+
 - SLACK_TOKEN: Slack access token for the bot user.
-- BOT_ID: user id for the bot user.
 - CHANNEL_ID: channel id for the channel where the bot will publish all tranfer events.
 
-### Step 2
+Run app in production mode: `$ npm start`
 
-Run app in development mode: `$ npm run dev`
+Run app in production mode for Ropsten network: `$ NETWORK=ropsten npm start`
