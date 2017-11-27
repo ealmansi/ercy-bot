@@ -1,4 +1,3 @@
-const logger = require('./logger');
 const Promise = require('bluebird');
 const redis = Promise.promisifyAll(require('redis'));
 const leftPad = require('left-pad');
@@ -6,21 +5,7 @@ const leftPad = require('left-pad');
 const KEY_SEPARATOR = ':';
 const ENCODING_PREFIX_LENGTH = 2;
 
-class DatabaseFactory {
-  
-  static createClient(namespace, cacheTtl) {
-    return new Promise((resolve, reject) => {
-      const redisClient = redis.createClient();
-      redisClient.on('ready', () => {
-        resolve(new DatabaseClient(namespace, cacheTtl, redisClient));
-      });
-      redisClient.on('error', reject);
-    });
-  }
-};
-
 class DatabaseClient {
-  
   constructor(namespace, cacheTtl, redisClient) {
     this.namespace = namespace;
     this.redisClient = redisClient;
@@ -45,24 +30,24 @@ class DatabaseClient {
       const fields = this.flatten(Object.entries(transfer));
       const transferId = this.makeTransferId(transfer);
       await this.redisClient.multi()
-      .hmset(transferKey, ...fields)
-      .expire(transferKey, this.cacheTtl)
-      .zadd(this.transfersKey, 0, this.encodeTransferId(transferId))
-      .expire(this.transfersKey, this.cacheTtl)
-      .execAsync();
+        .hmset(transferKey, ...fields)
+        .expire(transferKey, this.cacheTtl)
+        .zadd(this.transfersKey, 0, this.encodeTransferId(transferId))
+        .expire(this.transfersKey, this.cacheTtl)
+        .execAsync();
     }
   }
 
   async nextTransfer() {
     const range = await this.redisClient.zrangebyscoreAsync(this.transfersKey, ...[
-      0, 0, 'LIMIT', 0, 1
+      0, 0, 'LIMIT', 0, 1,
     ]);
     if (range.length === 0) {
       return null;
     }
     const transferId = this.decodeTransferId(range[0]);
     const transferKey = this.makeTransferKeyFromId(transferId);
-    return await this.redisClient.hgetallAsync(transferKey);
+    return this.redisClient.hgetallAsync(transferKey);
   }
 
   async removeTransfer(transfer) {
@@ -77,7 +62,7 @@ class DatabaseClient {
   makeTransferKeyFromId(transferId) {
     return this.addNamespace(['tx', transferId].join(KEY_SEPARATOR));
   }
-  
+
   makeTransferKey(transfer) {
     return this.makeTransferKeyFromId(this.makeTransferId(transfer));
   }
@@ -88,7 +73,7 @@ class DatabaseClient {
       this.encodeLength(blockNumber),
       blockNumber,
       this.encodeLength(logIndex),
-      logIndex
+      logIndex,
     ].join(KEY_SEPARATOR);
   }
 
@@ -97,11 +82,8 @@ class DatabaseClient {
   }
 
   decodeTransferId(encodedTransferId) {
-    const [_, blockNumber, __, logIndex] = encodedTransferId.split(KEY_SEPARATOR);
-    return [
-      blockNumber,
-      logIndex
-    ].join(KEY_SEPARATOR);
+    const pieces = encodedTransferId.split(KEY_SEPARATOR);
+    return [pieces[1], pieces[3]].join(KEY_SEPARATOR);
   }
 
   addNamespace(baseKey) {
@@ -111,6 +93,18 @@ class DatabaseClient {
   flatten(array) {
     return array.reduce((result, element) => result.concat(element), []);
   }
-};
+}
+
+class DatabaseFactory {
+  static createClient(namespace, cacheTtl) {
+    return new Promise((resolve, reject) => {
+      const redisClient = redis.createClient();
+      redisClient.on('ready', () => {
+        resolve(new DatabaseClient(namespace, cacheTtl, redisClient));
+      });
+      redisClient.on('error', reject);
+    });
+  }
+}
 
 module.exports = DatabaseFactory;

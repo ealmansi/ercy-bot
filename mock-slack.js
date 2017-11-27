@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/chat.postMessage', (req, res) => {
-  logger.info(`Received message for channel ${req.query.channel}: \"${req.query.text}\".`);
+  logger.info(`Received message for channel ${req.query.channel}: "${req.query.text}".`);
   res.json({ ok: true });
 });
 

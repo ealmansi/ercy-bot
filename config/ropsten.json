@@ -17,6 +17,9 @@
         "address": "0x5c70f72006856afe3f462fa44ca24df40f5b9ae2"
       }
     ],
+    "web3": {
+      "host": "http://ropsten.smartcontracts.xyz:8565/"
+    },
     "explorerBaseUrls": {
       "address": "https://ropsten.etherscan.io/address",
       "transaction": "https://ropsten.etherscan.io/tx"

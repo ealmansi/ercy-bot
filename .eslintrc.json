@@ -1,0 +1,7 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+        "object-curly-newline": ["error", { "consistent": true }],
+        "class-methods-use-this": "off"
+    }
+}
