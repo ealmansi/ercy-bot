@@ -4,7 +4,7 @@ const moment = require('moment');
 const Promise = require('bluebird');
 const Web3 = require('web3');
 const Slack = require('slack-node');
-const DatabaseFactory = require('./src/DatabaseFactory');
+const DatabaseFactory = require('./src/db/DatabaseFactory');
 const BlockchainListener = require('./src/BlockchainListener');
 const SlackPublisher = require('./src/SlackPublisher');
 
