@@ -1,19 +1,17 @@
 const logger = require('./logger');
 const Promise = require('bluebird');
-const PollingWithRetry = require('./PollingWithRetry')
+const PollingWithRetry = require('./PollingWithRetry');
 
 const MIN_CONFIRMATIONS = 12;
 
 class BlockchainListener {
-
   constructor(contracts, abi, web3, db) {
     this.contracts = contracts;
     this.abi = abi;
     this.web3 = web3;
     this.db = db;
-    this.instances = contracts.map(contract => {
-      return web3.eth.contract(abi).at(contract.address);
-    });
+    this.instances = contracts.map(contract =>
+      web3.eth.contract(abi).at(contract.address));
   }
 
   start() {
@@ -27,16 +25,14 @@ class BlockchainListener {
       return;
     }
     const transfers = await this.getBlockTransfers(blockNumber);
-    for (const transfer of transfers) {
-      await this.db.addTransfer(transfer);
-    }
-    await this.db.setPendingBlockNumber(blockNumber + 1);
+    await Promise.each(transfers, transfer => this.db.addTransfer(transfer));
     logger.info(`Processed block ${blockNumber} successfully.`);
+    await this.db.setPendingBlockNumber(blockNumber + 1);
   }
 
   async getPendingBlockNumber() {
-    const nextBlockNumber = await this.web3.eth.getBlockNumberAsync() + 1;
     const pendingBlockNumber = await this.db.getPendingBlockNumber();
+    const nextBlockNumber = await this.web3.eth.getBlockNumberAsync() + 1;
     if (pendingBlockNumber === null) {
       return MIN_CONFIRMATIONS <= nextBlockNumber
         ? nextBlockNumber - MIN_CONFIRMATIONS
@@ -48,15 +44,15 @@ class BlockchainListener {
   }
 
   async getBlockTransfers(blockNumber) {
-    const filterOpts = { fromBlock: blockNumber, toBlock: blockNumber };
     const transfers = await Promise.reduce(
       this.contracts,
-      async (result, contract, idx) => {
-        return result.concat(
-          await this.getContractTransfers(contract, this.instances[idx], filterOpts)
-        );
-      },
-      []
+      async (result, contract, idx) =>
+        result.concat(await this.getContractTransfers(
+          contract,
+          this.instances[idx],
+          { fromBlock: blockNumber, toBlock: blockNumber },
+        )),
+      [],
     );
     return transfers.sort((t1, t2) => t1.logIndex - t2.logIndex);
   }
@@ -68,12 +64,16 @@ class BlockchainListener {
       const { blockNumber, logIndex, transactionHash, args } = log;
       const { from, to, value: valueObj } = args;
       return {
-        blockNumber, logIndex, transactionHash, from, to,
+        blockNumber,
+        logIndex,
+        transactionHash,
+        from,
+        to,
         value: valueObj.toString(),
-        unit: contract.symbol
+        unit: contract.symbol,
       };
     });
   }
-};
+}
 
 module.exports = BlockchainListener;

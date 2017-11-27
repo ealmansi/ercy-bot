@@ -1,7 +1,7 @@
 {
   "logger": {
-    "level": "warn",
-    "console": false
+    "level": "info",
+    "console": true
   },
   "db": {
     "cacheTtl": 3600

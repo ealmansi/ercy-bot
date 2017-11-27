@@ -7,11 +7,12 @@ const DEFAULT_BACK_OFF_INTERVAL = moment.duration(10, 'minutes').asMilliseconds(
 const DEFAULT_MAX_RETRIES = 5;
 
 class PollingWithRetry {
-
-  constructor(action,
-        pollInterval = DEFAULT_POLL_INTERVAL,
-        backOffInterval = DEFAULT_BACK_OFF_INTERVAL,
-        maxRetries = DEFAULT_MAX_RETRIES) {
+  constructor(
+    action,
+    pollInterval = DEFAULT_POLL_INTERVAL,
+    backOffInterval = DEFAULT_BACK_OFF_INTERVAL,
+    maxRetries = DEFAULT_MAX_RETRIES,
+  ) {
     this.action = action;
     this.pollInterval = pollInterval;
     this.backOffInterval = backOffInterval;
@@ -25,7 +26,7 @@ class PollingWithRetry {
   scheduleAction(timeout) {
     setTimeout(() => {
       const opts = { retries: this.maxRetries };
-      promiseRetry(async retry => {
+      promiseRetry(async (retry) => {
         try {
           await this.action();
         } catch (error) {
@@ -33,20 +34,20 @@ class PollingWithRetry {
           retry(error);
         }
       }, opts)
-      .then(() => {
-        this.scheduleAction(this.pollInterval);
-      })
-      .catch(error => {
-        this.logRetryError(error);
-        this.scheduleAction(this.backOffInterval);
-      });
+        .then(() => {
+          this.scheduleAction(this.pollInterval);
+        })
+        .catch((error) => {
+          PollingWithRetry.logRetryError(error);
+          this.scheduleAction(this.backOffInterval);
+        });
     }, timeout);
   }
 
-  logRetryError(error) {
+  static logRetryError(error) {
     logger.error([
       'Failed after multiple attempts. Trying again in a few minutes.',
-      `Last error: ${error.stack}.`
+      `Last error: ${error.stack}.`,
     ].join(' '));
   }
 }

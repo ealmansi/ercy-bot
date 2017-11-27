@@ -1,5 +1,5 @@
 const config = require('config');
-const path = require("path");
+const path = require('path');
 const winston = require('winston');
 
 const createLogger = () => {
@@ -16,7 +16,7 @@ const createLogger = () => {
     transports.push(new winston.transports.File({
       filename: filepath,
       level: config.get('logger.level'),
-      json: false
+      json: false,
     }));
   }
   return new winston.Logger({ transports });

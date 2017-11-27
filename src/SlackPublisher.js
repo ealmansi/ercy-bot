@@ -1,12 +1,9 @@
 const logger = require('./logger');
-const moment = require('moment')
-const promiseRetry = require('promise-retry');
-const PollingWithRetry = require('./PollingWithRetry')
+const PollingWithRetry = require('./PollingWithRetry');
 
 const DISPLAY_PREFIX_LENGTH = 8;
 
 class SlackPublisher {
-  
   constructor(slack, channelId, explorerBaseUrls, db) {
     this.slack = slack;
     this.channelId = channelId;
@@ -53,13 +50,13 @@ class SlackPublisher {
     const { ok, error } = await this.slack.apiAsync('chat.postMessage', {
       as_user: true,
       text: message,
-      channel: this.channelId
+      channel: this.channelId,
     });
     if (!ok) {
       throw new Error(`Slack API Error: ${error}.`);
     }
-    logger.info(`Message sent to Slack successfully: \"${message}\".`);
+    logger.info(`Message sent to Slack successfully: "${message}".`);
   }
-};
+}
 
 module.exports = SlackPublisher;
