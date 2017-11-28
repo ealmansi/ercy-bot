@@ -4,7 +4,7 @@ const moment = require('moment');
 const Promise = require('bluebird');
 const Web3 = require('web3');
 const Slack = require('slack-node');
-const DatabaseFactory = require('./src/db/DatabaseFactory');
+const DatabaseClient = require('./src/db/DatabaseClient');
 const BlockchainListener = require('./src/BlockchainListener');
 const SlackPublisher = require('./src/SlackPublisher');
 
@@ -14,7 +14,7 @@ const TIMEOUT_BEFORE_EXIT = moment.duration(3, 'seconds').asMilliseconds();
 async function buildDatabaseClient() {
   const namespace = config.get('db.namespace');
   const cacheTtl = config.get('db.cacheTtl');
-  return DatabaseFactory.createClient(namespace, cacheTtl);
+  return DatabaseClient.create(namespace, cacheTtl);
 }
 
 function buildBlockchainListener(db) {
