@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/ealmansi/ercy-bot.svg?branch=master)](https://travis-ci.org/ealmansi/ercy-bot)
 
+![ErcyBot Preview](https://i.imgur.com/L69FRel.png "ErcyBot Preview")
+
 ## Development
 
 Run app in development mode: `$ npm run dev`
