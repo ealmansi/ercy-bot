@@ -22,3 +22,7 @@ Run app in production mode for Ropsten network: `$ NETWORK=ropsten npm start`
 ## Test
 
 Run tests: `$ npm test`
+
+## Documentation
+
+Build and browse documentation: `$ npm run docs`
