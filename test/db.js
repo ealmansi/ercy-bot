@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: 0 */
 const chai = require('chai');
 const logger = require('../src/logger');
-const DatabaseFactory = require('../src/db/DatabaseFactory');
+const DatabaseClient = require('../src/db/DatabaseClient');
 const DatabaseUtil = require('../src/db/DatabaseUtil');
 const RedisServer = require('redis-server');
 const Promise = require('bluebird');
@@ -118,7 +118,7 @@ describe('DatabaseClient', () => {
     if (!process.env.TRAVIS) {
       server = await launchRedisServer();
     }
-    db = await DatabaseFactory.createClient(TEST_NAMESPACE, TEST_TTL);
+    db = await DatabaseClient.create(TEST_NAMESPACE, TEST_TTL);
     await db.redisClient.flushallAsync();
   });
 
