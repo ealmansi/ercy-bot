@@ -1,7 +1,7 @@
 {
   "name": "ercy-bot",
   "version": "1.0.0",
-  "description": "ErcyBot: real-time feed of Ethereum token transfers in your Slack workspace.",
+  "description": "ErcyBot: real-time feed of Ethereum ERC20 token transfers in your Slack workspace.",
   "main": "index.js",
   "scripts": {
     "start": "HOSTNAME=$NETWORK NODE_ENV=production node index.js",

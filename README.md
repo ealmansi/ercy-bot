@@ -1,4 +1,4 @@
-# ErcyBot: real-time feed of Ethereum token transfers in your Slack workspace.
+# ErcyBot: real-time feed of Ethereum ERC20 token transfers in your Slack workspace.
 
 [![Build Status](https://travis-ci.org/ealmansi/ercy-bot.svg?branch=master)](https://travis-ci.org/ealmansi/ercy-bot)
 
