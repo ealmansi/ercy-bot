@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ealmansi/ercy-bot.svg?branch=master)](https://travis-ci.org/ealmansi/ercy-bot)
 
-![ErcyBot Preview](https://i.imgur.com/L69FRel.png "ErcyBot Preview")
+![ErcyBot Preview](https://github.com/ealmansi/ercy-bot/blob/master/imgs/ErcyBotPreview.png "ErcyBot Preview")
 
 ## Development
 
