@@ -1,7 +1,7 @@
 {
-  "name": "dizzy-chipmunk",
+  "name": "ercy-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "ErcyBot: real-time feed of Ethereum ERC20 token transfers in your Slack workspace.",
   "main": "index.js",
   "scripts": {
     "start": "HOSTNAME=$NETWORK NODE_ENV=production node index.js",
@@ -9,7 +9,16 @@
     "test": "./node_modules/.bin/mocha --timeout 10000",
     "docs": "./node_modules/.bin/jsdoc -r -d docs *.js src/ && ./node_modules/.bin/http-server docs/"
   },
-  "keywords": [],
+  "keywords": [
+    "slack",
+    "bot",
+    "app",
+    "ethereum",
+    "blockchain",
+    "erc20",
+    "token",
+    "transfer"
+  ],
   "author": "Emilio Almansi",
   "license": "MIT",
   "dependencies": {

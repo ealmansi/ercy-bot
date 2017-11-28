@@ -1,6 +1,8 @@
-# ErcyBot: real-time feed of Ethereum token transfers in your Slack workspace.
+# ErcyBot: real-time feed of Ethereum ERC20 token transfers in your Slack workspace.
 
-[![Build Status](https://travis-ci.org/ealmansi/dizzy-chipmunk.svg?branch=master)](https://travis-ci.org/ealmansi/dizzy-chipmunk)
+[![Build Status](https://travis-ci.org/ealmansi/ercy-bot.svg?branch=master)](https://travis-ci.org/ealmansi/ercy-bot)
+
+![ErcyBot Preview](https://i.imgur.com/L69FRel.png "ErcyBot Preview")
 
 ## Development
 
@@ -22,3 +24,7 @@ Run app in production mode for Ropsten network: `$ NETWORK=ropsten npm start`
 ## Test
 
 Run tests: `$ npm test`
+
+## Documentation
+
+Build and browse documentation: `$ npm run docs`
