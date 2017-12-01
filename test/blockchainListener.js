@@ -58,52 +58,50 @@ describe('BlockchainListener', () => {
 
   describe('#getPendingBlockNumber()', () => {
     // No previously saved pending block. No confirmed blocks available.
-    const PENDING_BLOCK_NUMBER_0 = null;
     const BLOCK_NUMBER_0 = 5;
-    const EXPECTED_PENDING_BLOCK_NUMBER_0 = null;
+    const EXPECTED_BLOCK_NUMBER_RANGE_0 = null;
 
     // No previously saved pending block. Confirmed block available.
-    const PENDING_BLOCK_NUMBER_1 = null;
     const BLOCK_NUMBER_1 = 20;
-    const EXPECTED_PENDING_BLOCK_NUMBER_1 = 9;
+    const PENDING_BLOCK_NUMBER_1 = null;
+    const EXPECTED_BLOCK_NUMBER_RANGE_1 = [9, 9];
 
     // Previously saved pending block without enough confirmations.
-    const PENDING_BLOCK_NUMBER_2 = 20;
     const BLOCK_NUMBER_2 = 25;
-    const EXPECTED_PENDING_BLOCK_NUMBER_2 = null;
+    const PENDING_BLOCK_NUMBER_2 = 20;
+    const EXPECTED_BLOCK_NUMBER_RANGE_2 = null;
 
     // Previously saved pending block with enough confirmations.
-    const PENDING_BLOCK_NUMBER_3 = 20;
     const BLOCK_NUMBER_3 = 45;
-    const EXPECTED_PENDING_BLOCK_NUMBER_3 = 20;
+    const PENDING_BLOCK_NUMBER_3 = 20;
+    const EXPECTED_BLOCK_NUMBER_RANGE_3 = [20, 24];
 
     it('should calculate next pending confirmed block correctly', async () => {
       const listener = buildBlockchainListener();
-      listener.db.getPendingBlockNumber = sinon.stub();
       listener.web3.eth.getBlockNumberAsync = sinon.stub();
-      listener.db.getPendingBlockNumber.onCall(0).returns(PENDING_BLOCK_NUMBER_0);
+      listener.db.getPendingBlockNumber = sinon.stub();
       listener.web3.eth.getBlockNumberAsync.onCall(0).returns(BLOCK_NUMBER_0);
-      listener.db.getPendingBlockNumber.onCall(1).returns(PENDING_BLOCK_NUMBER_1);
       listener.web3.eth.getBlockNumberAsync.onCall(1).returns(BLOCK_NUMBER_1);
-      listener.db.getPendingBlockNumber.onCall(2).returns(PENDING_BLOCK_NUMBER_2);
+      listener.db.getPendingBlockNumber.onCall(0).returns(PENDING_BLOCK_NUMBER_1);
       listener.web3.eth.getBlockNumberAsync.onCall(2).returns(BLOCK_NUMBER_2);
-      listener.db.getPendingBlockNumber.onCall(3).returns(PENDING_BLOCK_NUMBER_3);
+      listener.db.getPendingBlockNumber.onCall(1).returns(PENDING_BLOCK_NUMBER_2);
       listener.web3.eth.getBlockNumberAsync.onCall(3).returns(BLOCK_NUMBER_3);
-      chai.assert.equal(
-        await listener.getPendingBlockNumber(),
-        EXPECTED_PENDING_BLOCK_NUMBER_0,
+      listener.db.getPendingBlockNumber.onCall(2).returns(PENDING_BLOCK_NUMBER_3);
+      chai.assert.deepEqual(
+        await listener.getBlockNumberRange(),
+        EXPECTED_BLOCK_NUMBER_RANGE_0,
       );
-      chai.assert.equal(
-        await listener.getPendingBlockNumber(),
-        EXPECTED_PENDING_BLOCK_NUMBER_1,
+      chai.assert.deepEqual(
+        await listener.getBlockNumberRange(),
+        EXPECTED_BLOCK_NUMBER_RANGE_1,
       );
-      chai.assert.equal(
-        await listener.getPendingBlockNumber(),
-        EXPECTED_PENDING_BLOCK_NUMBER_2,
+      chai.assert.deepEqual(
+        await listener.getBlockNumberRange(),
+        EXPECTED_BLOCK_NUMBER_RANGE_2,
       );
-      chai.assert.equal(
-        await listener.getPendingBlockNumber(),
-        EXPECTED_PENDING_BLOCK_NUMBER_3,
+      chai.assert.deepEqual(
+        await listener.getBlockNumberRange(),
+        EXPECTED_BLOCK_NUMBER_RANGE_3,
       );
     });
   });
@@ -150,6 +148,7 @@ describe('BlockchainListener', () => {
 
   describe('#getBlockTransfers()', () => {
     const BLOCK_NUMBER = 12345;
+    const NEXT_BLOCK_NUMBER = BLOCK_NUMBER + 1;
 
     const TEST_CONTRACT_LOGS = [
       [
@@ -157,6 +156,16 @@ describe('BlockchainListener', () => {
           blockNumber: BLOCK_NUMBER,
           logIndex: 2,
           transactionHash: '0x2',
+          args: {
+            from: '0xabc',
+            to: '0xdef',
+            value: new BigNumber('123456'),
+          },
+        },
+        {
+          blockNumber: NEXT_BLOCK_NUMBER,
+          logIndex: 1,
+          transactionHash: '0x4',
           args: {
             from: '0xabc',
             to: '0xdef',
@@ -175,12 +184,32 @@ describe('BlockchainListener', () => {
             value: new BigNumber('12345678901234'),
           },
         },
+        {
+          blockNumber: NEXT_BLOCK_NUMBER,
+          logIndex: 3,
+          transactionHash: '0x6',
+          args: {
+            from: '0xabc',
+            to: '0xdef',
+            value: new BigNumber('12345678901234'),
+          },
+        },
       ],
       [
         {
           blockNumber: BLOCK_NUMBER,
           logIndex: 3,
           transactionHash: '0x3',
+          args: {
+            from: '0xabc',
+            to: '0xdef',
+            value: new BigNumber('1'),
+          },
+        },
+        {
+          blockNumber: NEXT_BLOCK_NUMBER,
+          logIndex: 2,
+          transactionHash: '0x5',
           args: {
             from: '0xabc',
             to: '0xdef',
@@ -218,10 +247,37 @@ describe('BlockchainListener', () => {
         value: '1e-18',
         unit: 'SYM3',
       },
+      {
+        blockNumber: NEXT_BLOCK_NUMBER,
+        logIndex: 1,
+        transactionHash: '0x4',
+        from: '0xabc',
+        to: '0xdef',
+        value: '0.123456',
+        unit: 'SYM1',
+      },
+      {
+        blockNumber: NEXT_BLOCK_NUMBER,
+        logIndex: 2,
+        transactionHash: '0x5',
+        from: '0xabc',
+        to: '0xdef',
+        value: '1e-18',
+        unit: 'SYM3',
+      },
+      {
+        blockNumber: NEXT_BLOCK_NUMBER,
+        logIndex: 3,
+        transactionHash: '0x6',
+        from: '0xabc',
+        to: '0xdef',
+        value: '12345.678901234',
+        unit: 'SYM2',
+      },
     ];
 
     it('should collect transfers from all contracts in log index order', async () => {
-      const filterOpts = { fromBlock: BLOCK_NUMBER, toBlock: BLOCK_NUMBER };
+      const filterOpts = { fromBlock: BLOCK_NUMBER, toBlock: NEXT_BLOCK_NUMBER };
       const contractInstances = TEST_CONTRACTS.map((contract, idx) => ({
         Transfer: sinon.stub().withArgs({}, filterOpts).returns({
           get: sinon.stub().yields(null, TEST_CONTRACT_LOGS[idx]),
@@ -229,7 +285,7 @@ describe('BlockchainListener', () => {
       }));
       const listener = buildBlockchainListener(contractInstances);
       chai.assert.deepEqual(
-        await listener.getBlockTransfers(BLOCK_NUMBER),
+        await listener.getBlockTransfers([BLOCK_NUMBER, NEXT_BLOCK_NUMBER]),
         EXPECTED_TRANSFERS,
       );
     });

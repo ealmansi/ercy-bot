@@ -4,6 +4,7 @@ const PollingWithRetry = require('./PollingWithRetry');
 const BigNumber = require('bignumber.js');
 
 const MIN_CONFIRMATIONS = 12;
+const MAX_BLOCK_BATCH_SIZE = 5;
 
 class BlockchainListener {
   /**
@@ -30,58 +31,85 @@ class BlockchainListener {
    */
   start() {
     logger.info('Starting blockchain listener.');
-    new PollingWithRetry(this.handlePendingBlock.bind(this)).start();
+    new PollingWithRetry(this.handlePendingBlockBatch.bind(this)).start();
   }
 
   /**
-   * Tries to add token transfers from the next pending block into the publish queue.
+   * Tries to add token transfers from the next batch of pending (unprocessed) blocks
+   * into the publishing queue.
    */
-  async handlePendingBlock() {
-    const blockNumber = await this.getPendingBlockNumber();
-    if (blockNumber === null) {
+  async handlePendingBlockBatch() {
+    const blockNumberRange = await this.getBlockNumberRange();
+    if (blockNumberRange === null) {
       return;
     }
-    const transfers = await this.getBlockTransfers(blockNumber);
+    const transfers = await this.getBlockTransfers(blockNumberRange);
     await Promise.each(transfers, transfer => this.db.addTransfer(transfer));
-    logger.info(`Processed block ${blockNumber} successfully.`);
-    await this.db.setPendingBlockNumber(blockNumber + 1);
+    logger.info(`Processed up to block ${blockNumberRange[1]} successfully.`);
+    await this.db.setPendingBlockNumber(blockNumberRange[1] + 1);
   }
 
   /**
-   * Gets the block number for the next pending block which has enough
-   * confirmations for publishing. If no pending block is available, the
-   * latest block with enough confirmations is returned.
-   * @returns {Number}
+   * Produces an array with two elements defining a range of block numbers
+   * for fetching next.
+   *
+   * The range begins with the next pending block, and extends
+   * up to the latest block which has at least MIN_CONFIRMATIONS confirmations,
+   * without exceeding a range size of MAX_BLOCK_BATCH_SIZE.
+   *
+   * If no block has been marked as pending, a range containing only the
+   * latest block with MIN_CONFIRMATIONS confirmations is returned.
+   *
+   * If no blocks in this range have at least MIN_CONFIRMATIONS confirmations,
+   * null is returned instead.
+   * @returns {Array}
    */
-  async getPendingBlockNumber() {
-    const pendingBlockNumber = await this.db.getPendingBlockNumber();
+  async getBlockNumberRange() {
     const nextBlockNumber = await this.web3.eth.getBlockNumberAsync() + 1;
-    if (pendingBlockNumber === null) {
-      return MIN_CONFIRMATIONS <= nextBlockNumber
-        ? nextBlockNumber - MIN_CONFIRMATIONS
-        : null;
+    if (nextBlockNumber < MIN_CONFIRMATIONS) {
+      return null;
     }
-    return pendingBlockNumber + MIN_CONFIRMATIONS <= nextBlockNumber
-      ? pendingBlockNumber
-      : null;
+    const confirmedBlockNumber = nextBlockNumber - MIN_CONFIRMATIONS;
+    const pendingBlockNumber = await this.db.getPendingBlockNumber();
+    if (pendingBlockNumber === null) {
+      return [confirmedBlockNumber, confirmedBlockNumber];
+    }
+    if (confirmedBlockNumber < pendingBlockNumber) {
+      return null;
+    }
+    return [
+      pendingBlockNumber,
+      Math.min(confirmedBlockNumber, pendingBlockNumber + (MAX_BLOCK_BATCH_SIZE - 1)),
+    ];
   }
 
   /**
-   * Fetches all token transfers for the block at the given height.
-   * @param {Number} blockNumber - Height from block from which to retrieve transfers.
+   * Fetches all token transfers for the blocks in the given range.
+   * @param {Array} blockNumberRange - Range of block numbers to be fetched.
    */
-  async getBlockTransfers(blockNumber) {
+  async getBlockTransfers(blockNumberRange) {
     const transfers = await Promise.reduce(
       this.contracts,
       async (result, contract, idx) =>
         result.concat(await this.getContractTransfers(
           contract,
           this.contractInstances[idx],
-          { fromBlock: blockNumber, toBlock: blockNumber },
+          { fromBlock: blockNumberRange[0], toBlock: blockNumberRange[1] },
         )),
       [],
     );
-    return transfers.sort((t1, t2) => t1.logIndex - t2.logIndex);
+    return transfers.sort(BlockchainListener.compareTransactions);
+  }
+
+  /**
+   * Compares transactions t1 and t2 by the order of their appearence in the blockchain.
+   * @param {Object} t1
+   * @param {Object} t2
+   */
+  static compareTransactions(t1, t2) {
+    return t1.blockNumber !== t2.blockNumber
+      ? t1.blockNumber - t2.blockNumber
+      : t1.logIndex - t2.logIndex;
   }
 
   /**
