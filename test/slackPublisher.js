@@ -36,7 +36,7 @@ describe('SlackPublisher', () => {
 
     const TRANSFER_MESSAGE = '<http://someexplorer.com/address/0x1|0x1...> sent 10 SYM1 to <http://someexplorer.com/address/0x2|0x2...>! (tx: <http://someexplorer.com/tx/0x0|0x0...>).';
 
-    it('should build message from transfer successfully', (done) => {
+    it('should handle the immediately next pending transfer successfully', (done) => {
       const slackApi = nock('https://slack.com/api')
         .get('/chat.postMessage')
         .query((query) => {
