@@ -12,16 +12,19 @@ describe('BlockchainListener', () => {
     {
       name: 'Name 1',
       symbol: 'SYM1',
+      decimals: 6,
       address: '0x1',
     },
     {
       name: 'Name 2',
       symbol: 'SYM2',
+      decimals: 9,
       address: '0x2',
     },
     {
       name: 'Name 3',
       symbol: 'SYM3',
+      decimals: 18,
       address: '0x3',
     },
   ];
@@ -114,7 +117,7 @@ describe('BlockchainListener', () => {
         args: {
           from: '0x1',
           to: '0x2',
-          value: '10',
+          value: new BigNumber('10'),
         },
       },
     ];
@@ -126,7 +129,7 @@ describe('BlockchainListener', () => {
         transactionHash: '0x0',
         from: '0x1',
         to: '0x2',
-        value: '10',
+        value: '0.00001',
         unit: 'SYM1',
       },
     ];
@@ -157,7 +160,7 @@ describe('BlockchainListener', () => {
           args: {
             from: '0xabc',
             to: '0xdef',
-            value: new BigNumber(10),
+            value: new BigNumber('123456'),
           },
         },
       ],
@@ -169,7 +172,7 @@ describe('BlockchainListener', () => {
           args: {
             from: '0xabc',
             to: '0xdef',
-            value: new BigNumber(10),
+            value: new BigNumber('12345678901234'),
           },
         },
       ],
@@ -181,7 +184,7 @@ describe('BlockchainListener', () => {
           args: {
             from: '0xabc',
             to: '0xdef',
-            value: new BigNumber(10),
+            value: new BigNumber('1'),
           },
         },
       ],
@@ -194,7 +197,7 @@ describe('BlockchainListener', () => {
         transactionHash: '0x1',
         from: '0xabc',
         to: '0xdef',
-        value: '10',
+        value: '12345.678901234',
         unit: 'SYM2',
       },
       {
@@ -203,7 +206,7 @@ describe('BlockchainListener', () => {
         transactionHash: '0x2',
         from: '0xabc',
         to: '0xdef',
-        value: '10',
+        value: '0.123456',
         unit: 'SYM1',
       },
       {
@@ -212,7 +215,7 @@ describe('BlockchainListener', () => {
         transactionHash: '0x3',
         from: '0xabc',
         to: '0xdef',
-        value: '10',
+        value: '1e-18',
         unit: 'SYM3',
       },
     ];
