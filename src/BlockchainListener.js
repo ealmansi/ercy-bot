@@ -1,6 +1,7 @@
 const logger = require('./logger');
 const Promise = require('bluebird');
 const PollingWithRetry = require('./PollingWithRetry');
+const BigNumber = require('bignumber.js');
 
 const MIN_CONFIRMATIONS = 12;
 
@@ -97,13 +98,14 @@ class BlockchainListener {
     return logs.map((log) => {
       const { blockNumber, logIndex, transactionHash, args } = log;
       const { from, to, value: valueObj } = args;
+      const value = valueObj.dividedBy(new BigNumber(10).toPower(contract.decimals));
       return {
         blockNumber,
         logIndex,
         transactionHash,
         from,
         to,
-        value: valueObj.toString(),
+        value: value.toString(),
         unit: contract.symbol,
       };
     });

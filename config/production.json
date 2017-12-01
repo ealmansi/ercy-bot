@@ -9,13 +9,50 @@
   "eth": {
     "contracts": [
       {
-        "name": "Dizzy Token",
-        "symbol": "DZN",
-        "address": "0x6bfab66e69c806041681a5fd44eca4fe1a9a5b7f"
+        "name": "Qtum",
+        "symbol": "QTUM",
+        "decimals": 18,
+        "address": "0x9a642d6b3368ddc662CA244bAdf32cDA716005BC"
+      },
+      {
+        "name": "EOS",
+        "symbol": "EOS",
+        "decimals": 18,
+        "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0"
+      },
+      {
+        "name": "OmiseGo",
+        "symbol": "OMG",
+        "decimals": 18,
+        "address": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07"
+      },
+      {
+        "name": "Maker",
+        "symbol": "MKR",
+        "decimals": 18,
+        "address": "0xc66ea802717bfb9833400264dd12c2bceaa34a6d"
+      },
+      {
+        "name": "Augur",
+        "symbol": "REP",
+        "decimals": 18,
+        "address": "0xe94327d07fc17907b4db788e5adf2ed424addff6"
+      },
+      {
+        "name": "Golem",
+        "symbol": "GNT",
+        "decimals": 18,
+        "address": "0xa74476443119A942dE498590Fe1f2454d7D4aC0d"
+      },
+      {
+        "name": "Digix Global",
+        "symbol": "DGD",
+        "decimals": 9,
+        "address": "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a"
       }
     ],
     "web3": {
-      "host": "http://localhost:8545/"
+      "host": "http://mainnet.coralfundraisernodes.com/"
     },
     "explorerBaseUrls": {
       "address": "https://etherscan.io/address",
