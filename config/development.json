@@ -16,7 +16,7 @@
       }
     ],
     "web3": {
-      "host": "http://localhost:8545/"
+      "host": "<WEB3_PROVIDER_HOST>"
     },
     "explorerBaseUrls": {
       "address": "https://etherscan.io/address",

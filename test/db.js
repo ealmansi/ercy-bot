@@ -4,8 +4,8 @@ const chai = require('chai');
 const logger = require('../src/logger');
 const DatabaseClient = require('../src/db/DatabaseClient');
 const DatabaseUtil = require('../src/db/DatabaseUtil');
-const RedisServer = require('redis-server');
 const Promise = require('bluebird');
+const RedisServer = require('redis-server');
 
 describe('DatabaseUtil', () => {
   describe('#getTransferId()', () => {
@@ -64,7 +64,7 @@ describe('DatabaseUtil', () => {
 });
 
 describe('DatabaseClient', () => {
-  const TEST_NAMESPACE = 'somenamespace';
+  const TEST_NAMESPACE = 'ercybottest';
 
   const TEST_TTL = 10;
 
@@ -103,29 +103,38 @@ describe('DatabaseClient', () => {
   let server;
   let db;
 
-  const launchRedisServer = async () =>
-    new Promise((resolve, reject) => {
+  async function launchRedisServer() {
+    return new Promise((resolve, reject) => {
       const redisServer = new RedisServer();
       redisServer.open((error) => {
         if (error) {
           reject(error);
         }
-        resolve(redisServer);
+        resolve(Promise.promisifyAll(redisServer));
       });
     });
+  }
 
   before(async () => {
-    if (!process.env.TRAVIS) {
+    server = null;
+    db = await DatabaseClient.create(TEST_NAMESPACE, TEST_TTL).catch(err => null);
+    if (db === null) {
       server = await launchRedisServer();
+      db = await DatabaseClient.create(TEST_NAMESPACE, TEST_TTL);
     }
-    db = await DatabaseClient.create(TEST_NAMESPACE, TEST_TTL);
-    await db.redisClient.flushallAsync();
+    const keys = await db.redisClient.keysAsync(`${TEST_NAMESPACE}:*`);
+    if (keys.length > 0) {
+      await db.redisClient.delAsync(...keys);
+    }
   });
 
-  after((done) => {
-    if (db && db.redisClient) db.redisClient.quit();
-    if (server) server.close();
-    done();
+  after(async () => {
+    if (db !== null) {
+      await db.redisClient.quitAsync();
+    }
+    if (server !== null) {
+      await server.closeAsync();
+    }
   });
 
   describe('#getPendingBlockNumber(), #setPendingBlockNumber()', () => {

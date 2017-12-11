@@ -48,11 +48,10 @@ This will launch a testrpc instance, deploy a token contract, and generate rando
 
 ### Running ErcyBot in Development Mode.
 
-Introduce the following information in file `config/development.json`:
+Copy file `config/local-development.json.sample` into `config/local-development.json` and introduce the following information:
 
-- DEPLOYED_TOKEN_ADDRESS: Address of the deployed token contract of interest.
-
-Update the target contracts and web3 provider host as necessary. 
+- DEPLOYED_TOKEN_ADDRESS: Address of the deployed test token contract.
+- WEB3_PROVIDER_HOST: url of RPC-enabled Ethereum node supporting filters. When running locally with testrpc use: http://localhost:8545/.
 
 Next, run ErcyBot in development mode:
 
