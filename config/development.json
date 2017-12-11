@@ -7,25 +7,14 @@
     "cacheTtl": 1200
   },
   "eth": {
-    "contracts": [
-      {
-        "name": "Dizzy Token",
-        "symbol": "DZN",
-        "decimals": 2,
-        "address": "<DEPLOYED_TOKEN_ADDRESS>"
-      }
-    ],
-    "web3": {
-      "host": "<WEB3_PROVIDER_HOST>"
-    },
     "explorerBaseUrls": {
       "address": "https://etherscan.io/address",
       "transaction": "https://etherscan.io/tx"
     }
   },
   "slack": {
-    "token": "SLACK_TOKEN",
-    "channelId": "CHANNEL_ID",
+    "token": "SOME_SLACK_TOKEN",
+    "channelId": "SOME_CHANNEL_ID",
     "mock": {
       "host": "http://localhost:3000/",
       "port": 3000
