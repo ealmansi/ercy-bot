@@ -6,7 +6,7 @@
   "scripts": {
     "start": "HOSTNAME=$NETWORK NODE_ENV=production node index.js",
     "dev": "HOSTNAME=$NETWORK NODE_ENV=development bash scripts/dev.sh",
-    "test": "./node_modules/.bin/mocha --timeout 10000",
+    "test": "./node_modules/.bin/mocha --exit --timeout 10000",
     "docs": "./node_modules/.bin/jsdoc -r -d docs *.js src/ && ./node_modules/.bin/http-server docs/"
   },
   "keywords": [
