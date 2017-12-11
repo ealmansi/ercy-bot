@@ -1,5 +1,4 @@
 require('babel-register');
-const config = require('./config');
 
 module.exports = {
   networks: {
@@ -10,8 +9,8 @@ module.exports = {
       network_id: '*',
     },
     ropsten: {
-      host: config.ropsten.host,
-      port: config.ropsten.port,
+      host: 'ropsten.smartcontracts.xyz',
+      port: 8565,
       gas: 4700036,
       network_id: '3',
     },
