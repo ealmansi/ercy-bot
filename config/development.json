@@ -12,7 +12,7 @@
         "name": "Dizzy Token",
         "symbol": "DZN",
         "decimals": 2,
-        "address": "0x1eb8c65a58e29272e48ac82d84df56e3a5a515e4"
+        "address": "<DEPLOYED_TOKEN_ADDRESS>"
       }
     ],
     "web3": {
