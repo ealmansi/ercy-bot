@@ -11,8 +11,8 @@
       {
         "name": "Dizzy Token",
         "symbol": "DZN",
-        "decimals": 18,
-        "address": "0x5b676cb7a73467b6d353f1f2ca6861bf8c338bf2"
+        "decimals": 2,
+        "address": "0x1eb8c65a58e29272e48ac82d84df56e3a5a515e4"
       }
     ],
     "web3": {
