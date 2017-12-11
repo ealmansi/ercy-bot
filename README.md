@@ -48,7 +48,7 @@ This will launch a testrpc instance, deploy a token contract, and generate rando
 
 ### Running ErcyBot in Development Mode.
 
-Copy file `config/development.json.sample` into `config/development.json` and introduce the following information:
+Introduce the following information in file `config/development.json`:
 
 - DEPLOYED_TOKEN_ADDRESS: Address of the deployed token contract of interest.
 
