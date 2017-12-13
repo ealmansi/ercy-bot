@@ -1,4 +1,4 @@
-const logger = require('./src/logger');
+const logger = require('./logger');
 const RedisServer = require('redis-server');
 
 async function main() {

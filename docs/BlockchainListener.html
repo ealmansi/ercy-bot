@@ -207,7 +207,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line15">line 15</a>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -261,7 +261,7 @@
     
 
     
-    <h4 class="name" id="getBlockTransfers"><span class="type-signature">(async) </span>getBlockTransfers<span class="signature">(blockNumber)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".compareTransactions"><span class="type-signature">(static) </span>compareTransactions<span class="signature">(t1, t2)</span><span class="type-signature"></span></h4>
     
 
     
@@ -269,7 +269,7 @@
 
 
 <div class="description">
-    Fetches all token transfers for the block at the given height.
+    Compares transactions t1 and t2 by the order of their appearence in the blockchain.
 </div>
 
 
@@ -305,13 +305,13 @@
 
         <tr>
             
-                <td class="name"><code>blockNumber</code></td>
+                <td class="name"><code>t1</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">Object</span>
 
 
             
@@ -321,7 +321,30 @@
 
             
 
-            <td class="description last">Height from block from which to retrieve transfers.</td>
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>t2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -362,7 +385,257 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line72">line 72</a>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line109">line 109</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getBlockNumberRange"><span class="type-signature">(async) </span>getBlockNumberRange<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Produces an array with two elements defining a range of block numbers
+for fetching next.
+
+The range begins with the next pending block, and extends
+up to the latest block which has at least MIN_CONFIRMATIONS confirmations,
+without exceeding a range size of MAX_BLOCK_BATCH_SIZE.
+
+If no block has been marked as pending, a range containing only the
+latest block with MIN_CONFIRMATIONS confirmations is returned.
+
+If no blocks in this range have at least MIN_CONFIRMATIONS confirmations,
+null is returned instead.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getBlockTransfers"><span class="type-signature">(async) </span>getBlockTransfers<span class="signature">(blockNumberRange)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Fetches all token transfers for the blocks in the given range.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>blockNumberRange</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Range of block numbers to be fetched.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -544,7 +817,7 @@ given filtering options.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line94">line 94</a>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -596,7 +869,7 @@ given filtering options.
     
 
     
-    <h4 class="name" id="getPendingBlockNumber"><span class="type-signature">(async) </span>getPendingBlockNumber<span class="signature">()</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    <h4 class="name" id="handlePendingBlockBatch"><span class="type-signature">(async) </span>handlePendingBlockBatch<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -604,9 +877,8 @@ given filtering options.
 
 
 <div class="description">
-    Gets the block number for the next pending block which has enough
-confirmations for publishing. If no pending block is available, the
-latest block with enough confirmations is returned.
+    Tries to add token transfers from the next batch of pending (unprocessed) blocks
+into the publishing queue.
 </div>
 
 
@@ -650,111 +922,7 @@ latest block with enough confirmations is returned.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line55">line 55</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Number</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="handlePendingBlock"><span class="type-signature">(async) </span>handlePendingBlock<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Tries to add token transfers from the next pending block into the publish queue.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line38">line 38</a>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -840,7 +1008,7 @@ latest block with enough confirmations is returned.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line30">line 30</a>
+        <a href="BlockchainListener.js.html">BlockchainListener.js</a>, <a href="BlockchainListener.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -890,7 +1058,7 @@ latest block with enough confirmations is returned.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Nov 28 2017 12:43:44 GMT-0300 (-03)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 01:58:32 GMT-0300 (-03)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,9 +1,9 @@
 /* global describe it before after */
 /* eslint no-unused-vars: 0 */
 const chai = require('chai');
-const logger = require('../src/logger');
-const DatabaseClient = require('../src/db/DatabaseClient');
-const DatabaseUtil = require('../src/db/DatabaseUtil');
+const logger = require('../../src/logger');
+const DatabaseClient = require('../../src/app/db/DatabaseClient');
+const DatabaseUtil = require('../../src/app/db/DatabaseUtil');
 const Promise = require('bluebird');
 const RedisServer = require('redis-server');
 

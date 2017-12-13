@@ -5,7 +5,7 @@ const sinon = require('sinon');
 const nock = require('nock');
 const Promise = require('bluebird');
 const Slack = require('slack-node');
-const SlackPublisher = require('../src/SlackPublisher');
+const SlackPublisher = require('../../src/app/SlackPublisher');
 
 describe('SlackPublisher', () => {
   const TEST_SLACK_TOKEN = 'SOME_SLACK_TOKEN';

@@ -12,7 +12,7 @@ const createLogger = () => {
     }));
   }
   if (config.has('logger.file')) {
-    const filepath = path.resolve(require.main.filename, '..', config.get('logger.file'));
+    const filepath = path.resolve(require.main.filename, '..', '..', config.get('logger.file'));
     transports.push(new winston.transports.File({
       filename: filepath,
       level: config.get('logger.level'),

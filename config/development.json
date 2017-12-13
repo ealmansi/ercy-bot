@@ -7,6 +7,17 @@
     "cacheTtl": 1200
   },
   "eth": {
+    "contracts": [
+      {
+        "name": "Dizzy Token",
+        "symbol": "DZN",
+        "decimals": 2,
+        "address": "0xcfeb869f69431e42cdb54a4f4f105c19c080a601"
+      }
+    ],
+    "web3": {
+      "host": "http://localhost:8545/"
+    },
     "explorerBaseUrls": {
       "address": "https://etherscan.io/address",
       "transaction": "https://etherscan.io/tx"

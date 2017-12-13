@@ -1,5 +1,5 @@
 const config = require('config');
-const logger = require('./src/logger');
+const logger = require('./logger');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');

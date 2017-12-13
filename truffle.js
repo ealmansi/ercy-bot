@@ -1,4 +1,5 @@
 require('babel-register');
+require('config');
 
 module.exports = {
   networks: {

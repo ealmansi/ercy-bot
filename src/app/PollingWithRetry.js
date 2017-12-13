@@ -1,4 +1,4 @@
-const logger = require('./logger');
+const logger = require('../logger');
 const moment = require('moment');
 const promiseRetry = require('promise-retry');
 

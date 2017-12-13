@@ -1,4 +1,4 @@
-const logger = require('./logger');
+const logger = require('../logger');
 const PollingWithRetry = require('./PollingWithRetry');
 
 const DISPLAY_PREFIX_LENGTH = 8;

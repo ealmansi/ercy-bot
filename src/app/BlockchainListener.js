@@ -1,4 +1,4 @@
-const logger = require('./logger');
+const logger = require('../logger');
 const Promise = require('bluebird');
 const PollingWithRetry = require('./PollingWithRetry');
 const BigNumber = require('bignumber.js');

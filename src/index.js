@@ -1,12 +1,12 @@
 const config = require('config');
-const logger = require('./src/logger');
+const logger = require('./logger');
 const moment = require('moment');
 const Promise = require('bluebird');
 const Web3 = require('web3');
 const Slack = require('slack-node');
-const DatabaseClient = require('./src/db/DatabaseClient');
-const BlockchainListener = require('./src/BlockchainListener');
-const SlackPublisher = require('./src/SlackPublisher');
+const DatabaseClient = require('./app/db/DatabaseClient');
+const BlockchainListener = require('./app/BlockchainListener');
+const SlackPublisher = require('./app/SlackPublisher');
 
 const LAUNCH_ERROR_EXIT_CODE = 1;
 const TIMEOUT_BEFORE_EXIT = moment.duration(3, 'seconds').asMilliseconds();
