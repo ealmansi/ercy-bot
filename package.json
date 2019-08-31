@@ -38,7 +38,7 @@
     "redis": "^2.8.0",
     "redis-server": "^1.1.0",
     "slack-node": "^0.1.8",
-    "web3": "^1.2.1",
+    "web3": "^0.20.7",
     "winston": "^2.4.0"
   },
   "devDependencies": {
