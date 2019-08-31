@@ -1,6 +1,6 @@
 
-npx concurrently --kill-others --names 'TESTRPC,TRUFFLE' \
-  'npx testrpc -d' \
+npx concurrently --kill-others --names 'GANACHE,TRUFFLE' \
+  'npx ganache-cli -d' \
   'sleep 1 &&
     npx truffle compile &&
     npx truffle migrate &&
