@@ -115,8 +115,7 @@ describe('SlackPublisher', () => {
   });
 
   describe('#makeTransactionHashLink()', () => {
-    const TEST_TRANSACTION_HASH =
-        '0xee778b9574cfbbc7027d4ce8c998024c257c95878d0a553d9423b14bc6d98360';
+    const TEST_TRANSACTION_HASH = '0xee778b9574cfbbc7027d4ce8c998024c257c95878d0a553d9423b14bc6d98360';
 
     it('should make a link for a tx hash successfully', () => {
       const publisher = buildSlackPublisher();

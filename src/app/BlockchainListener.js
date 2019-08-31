@@ -1,7 +1,7 @@
-const logger = require('../logger');
 const Promise = require('bluebird');
-const PollingWithRetry = require('./PollingWithRetry');
 const BigNumber = require('bignumber.js');
+const logger = require('../logger');
+const PollingWithRetry = require('./PollingWithRetry');
 
 const MIN_CONFIRMATIONS = 12;
 const MAX_BLOCK_BATCH_SIZE = 5;
@@ -19,8 +19,7 @@ class BlockchainListener {
       throw new Error('Missing contracts to listen for.');
     }
     this.contracts = contracts;
-    this.contractInstances = contracts.map(contract =>
-      web3.eth.contract(abi).at(contract.address));
+    this.contractInstances = contracts.map(contract => web3.eth.contract(abi).at(contract.address));
     this.abi = abi;
     this.web3 = web3;
     this.db = db;
@@ -90,12 +89,11 @@ class BlockchainListener {
   async getBlockTransfers(blockNumberRange) {
     const transfers = await Promise.reduce(
       this.contracts,
-      async (result, contract, idx) =>
-        result.concat(await this.getContractTransfers(
-          contract,
-          this.contractInstances[idx],
-          { fromBlock: blockNumberRange[0], toBlock: blockNumberRange[1] },
-        )),
+      async (result, contract, idx) => result.concat(await this.getContractTransfers(
+        contract,
+        this.contractInstances[idx],
+        { fromBlock: blockNumberRange[0], toBlock: blockNumberRange[1] },
+      )),
       [],
     );
     return transfers.sort(BlockchainListener.compareTransactions);

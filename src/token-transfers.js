@@ -1,7 +1,7 @@
 /* global artifacts web3 */
 
-const logger = require('./logger');
 const Random = require('random-js');
+const logger = require('./logger');
 
 async function transfer(web3, random, dizzyToken) {
   const from = web3.eth.accounts[0];

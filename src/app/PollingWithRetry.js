@@ -1,6 +1,6 @@
-const logger = require('../logger');
 const moment = require('moment');
 const promiseRetry = require('promise-retry');
+const logger = require('../logger');
 
 const DEFAULT_POLL_INTERVAL = moment.duration(1, 'second').asMilliseconds();
 const DEFAULT_BACK_OFF_INTERVAL = moment.duration(10, 'minutes').asMilliseconds();

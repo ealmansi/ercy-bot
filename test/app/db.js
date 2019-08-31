@@ -1,11 +1,11 @@
 /* global describe it before after */
 /* eslint no-unused-vars: 0 */
 const chai = require('chai');
+const Promise = require('bluebird');
+const RedisServer = require('redis-server');
 const logger = require('../../src/logger');
 const DatabaseClient = require('../../src/app/db/DatabaseClient');
 const DatabaseUtil = require('../../src/app/db/DatabaseUtil');
-const Promise = require('bluebird');
-const RedisServer = require('redis-server');
 
 describe('DatabaseUtil', () => {
   describe('#getTransferId()', () => {

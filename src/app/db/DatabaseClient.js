@@ -85,8 +85,9 @@ class DatabaseClient {
     }
     const transferId = DatabaseUtil.decodeTransferId(range[0]);
     const transferKey = this.makeTransferKeyFromId(transferId);
-    const { blockNumber, logIndex, transactionHash, from, to, value, unit } =
-      await this.redisClient.hgetallAsync(transferKey);
+    const {
+      blockNumber, logIndex, transactionHash, from, to, value, unit,
+    } = await this.redisClient.hgetallAsync(transferKey);
     return {
       blockNumber: Number(blockNumber),
       logIndex: Number(logIndex),

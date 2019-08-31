@@ -1,8 +1,8 @@
 const config = require('config');
-const logger = require('./logger');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const logger = require('./logger');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
