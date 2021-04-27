@@ -35,7 +35,7 @@
     "moment": "^2.19.2",
     "promise-retry": "^1.1.1",
     "random-js": "^1.0.8",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "redis-server": "^1.1.0",
     "slack-node": "^0.1.8",
     "web3": "^0.20.7",
